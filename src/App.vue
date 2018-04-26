@@ -1,14 +1,11 @@
 <template>
   <div id="app">
-    <header>
-      <span>Vue.js PWA</span>
-    </header>
     <main>
       <router-view></router-view>
     </main>
     <el-input v-model="channel"></el-input>
     <el-button @click="login">login</el-button>
-    <el-button @click="userInfo">userInfo</el-button>
+    <el-button @click="getUserInfo">userInfo</el-button>
     <el-button @click="config">config</el-button>
   </div>
 </template>
@@ -21,11 +18,12 @@ export default {
   name: 'app',
   data() {
     return {
-      channel: ''
+      channel: '',
+      userInfo: {}
     }
   },
   mounted: function () {
-
+    this.getUserInfo()
   },
   methods: {
     config: function () {
@@ -36,17 +34,14 @@ export default {
         console.log(response)
       })
     },
-    userInfo: function () {
+    getUserInfo: function () {
+      let self = this
       axios.get(backEndPrefix + '/api/user/userinfo', {
         withCredentials: true
       }).then(response => {
-        console.log(response)
-      }).catch(error => {
-        console.log(JSON.stringify(error))
-        // this.$notify.error({
-        //   title: 'Error',
-        //   message: error
-        // })
+        console.log(response.data)
+      }).catch(_ => {
+        self.login()
       })
     },
     login: function () {
@@ -82,24 +77,5 @@ body {
 main {
   text-align: center;
   margin-top: 40px;
-}
-
-header {
-  margin: 0;
-  height: 56px;
-  padding: 0 16px 0 24px;
-  background-color: #35495e;
-  color: #ffffff;
-}
-
-header span {
-  display: block;
-  position: relative;
-  font-size: 20px;
-  line-height: 1;
-  letter-spacing: 0.02em;
-  font-weight: 400;
-  box-sizing: border-box;
-  padding-top: 16px;
 }
 </style>
