@@ -5,7 +5,6 @@ import {
 
 const state = {
   userInfo: {},
-  songList: {},
   userConfig: {}
 }
 
@@ -31,9 +30,6 @@ const actions = {
 const mutations = {
   setUserInfo(state, userInfo) {
     state.userInfo = userInfo
-  },
-  setSongList(state, songList) {
-    state.songList = songList
   },
   setUserConfig(state, userConfig) {
     state.userConfig = userConfig
