@@ -9,7 +9,8 @@ const state = {
 }
 
 const getters = {
-  userInfo: state => state.userInfo
+  userInfo: state => state.userInfo,
+  userConfig: state => state.userConfig
 }
 
 const actions = {

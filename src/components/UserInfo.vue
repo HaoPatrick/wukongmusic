@@ -4,6 +4,7 @@
     <img :src="userInfo.avatar">
     <el-input v-model="channelName"></el-input>
     <el-button @click="changeChannel">join channel</el-button>
+    <el-button @click="syncSongs">sync songs</el-button>
   </div>
 </template>
 
@@ -18,15 +19,20 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'userInfo'
+      'userInfo',
+      'userConfig'
     ])
   },
   methods: {
     ...mapActions([
-      'joinChannel'
+      'joinChannel',
+      'fetchSongList'
     ]),
     changeChannel() {
       this.joinChannel(this.channelName)
+    },
+    syncSongs() {
+      this.fetchSongList(this.userConfig)
     }
   }
 }

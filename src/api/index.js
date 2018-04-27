@@ -25,11 +25,15 @@ export async function fetchUserConfig() {
   }
 }
 
-export async function fetchUserSongList(id) {
+export async function fetchUserSongList(url, cookie) {
   try {
-    return await axios.get(backendPrefix + `/api/user/songList/${id}`, {
+    const response = await axios.post(backendPrefix + '/provider/songListWithUrl', {
+      url,
+      withCookie: cookie
+    }, {
       withCredentials: true
     })
+    return response.data
   } catch (error) {
     console.log(error)
   }
