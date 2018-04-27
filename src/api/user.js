@@ -5,9 +5,10 @@ import {
 
 export async function fetchUserInfo() {
   try {
-    return await axios.get(backendPrefix + '/api/user/userinfo', {
+    const userInfo = await axios.get(backendPrefix + '/api/user/userinfo', {
       withCredentials: true
     })
+    return userInfo.data
   } catch (error) {
     login()
   }
@@ -15,9 +16,10 @@ export async function fetchUserInfo() {
 
 export async function fetchUserConfig() {
   try {
-    return await axios.get(backendPrefix + '/api/user/configuration', {
+    const userConfig = await axios.get(backendPrefix + '/api/user/configuration', {
       withCredentials: true
     })
+    return userConfig.data
   } catch (error) {
     console.log(error)
   }

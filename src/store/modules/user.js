@@ -1,11 +1,12 @@
 import {
   fetchUserInfo,
-  fetchUserSongList
+  fetchUserConfig
 } from '../../api/user'
 
 const state = {
   userInfo: {},
-  songList: {}
+  songList: {},
+  userConfig: {}
 }
 
 const getters = {
@@ -13,15 +14,17 @@ const getters = {
 }
 
 const actions = {
-  fetchUserInfo({
+  async fetchUserInfo({
     commit
   }) {
-    fetchUserInfo().then(userInfo => {
-      commit('setUserInfo', userInfo.data)
-      fetchUserSongList(userInfo.data.id).then(songList => {
-        commit('setSongList', songList.data)
-      })
-    })
+    const userInfo = await fetchUserInfo()
+    commit('setUserInfo', userInfo)
+  },
+  async fetchUserConfig({
+    commit
+  }) {
+    const config = await fetchUserConfig()
+    commit('setUserConfig', config)
   }
 }
 
@@ -31,6 +34,9 @@ const mutations = {
   },
   setSongList(state, songList) {
     state.songList = songList
+  },
+  setUserConfig(state, userConfig) {
+    state.userConfig = userConfig
   }
 }
 

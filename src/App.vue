@@ -16,10 +16,12 @@ export default {
   },
   mounted: function () {
     this.fetchUserInfo()
+    this.fetchUserConfig()
   },
   methods: {
     ...mapActions([
-      'fetchUserInfo'
+      'fetchUserInfo',
+      'fetchUserConfig'
     ])
   }
 }
