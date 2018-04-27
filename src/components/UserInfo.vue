@@ -1,14 +1,22 @@
 <template>
   <div>
+    <p>name:{{userInfo.userName}}</p>
+    <img :src="userInfo.avatar">
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  name: 'hello',
+  name: 'userinfo',
   data() {
     return {
     }
+  },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
   }
 }
 </script>

@@ -1,9 +1,11 @@
 import {
-  fetchUserInfo
+  fetchUserInfo,
+  fetchUserSongList
 } from '../../api/user'
 
 const state = {
-  userInfo: {}
+  userInfo: {},
+  songList: {}
 }
 
 const getters = {
@@ -16,6 +18,9 @@ const actions = {
   }) {
     fetchUserInfo().then(userInfo => {
       commit('setUserInfo', userInfo.data)
+      fetchUserSongList(userInfo.data.id).then(songList => {
+        commit('setSongList', songList.data)
+      })
     })
   }
 }
@@ -23,6 +28,9 @@ const actions = {
 const mutations = {
   setUserInfo(state, userInfo) {
     state.userInfo = userInfo
+  },
+  setSongList(state, songList) {
+    state.songList = songList
   }
 }
 

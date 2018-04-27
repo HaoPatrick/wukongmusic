@@ -13,6 +13,26 @@ export async function fetchUserInfo() {
   }
 }
 
+export async function fetchUserConfig() {
+  try {
+    return await axios.get(backendPrefix + '/api/user/configuration', {
+      withCredentials: true
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function fetchUserSongList(id) {
+  try {
+    return await axios.get(backendPrefix + '/api/user/songList/' + id, {
+      withCredentials: true
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export async function login() {
   try {
     const response = await axios.get(backendPrefix + '/oauth/all')
