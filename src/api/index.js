@@ -39,6 +39,20 @@ export async function fetchUserSongList(url, cookie) {
   }
 }
 
+export async function sendUpNext(song, cookie = null) {
+  try {
+    const response = await axios.post(backendPrefix + '/api/channel/updateNextSong', {
+      ...song,
+      withCookie: cookie
+    }, {
+      withCredentials: true
+    })
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export async function joinChannel(name) {
   try {
     const response = await axios.post(backendPrefix + `/api/channel/join/${name}`, {}, {
