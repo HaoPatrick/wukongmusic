@@ -3,12 +3,12 @@
     <p>name:{{userInfo.userName}}</p>
     <img :src="userInfo.avatar">
     <el-input v-model="channelName"></el-input>
-    <el-button @click="joinChannel">join channel</el-button>
+    <el-button @click="changeChannel">join channel</el-button>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'userinfo',
   data() {
@@ -22,11 +22,11 @@ export default {
     ])
   },
   methods: {
-    ...mapMutations([
-      'setChannelName'
+    ...mapActions([
+      'joinChannel'
     ]),
-    joinChannel() {
-      this.setChannelName(this.channelName)
+    changeChannel() {
+      this.joinChannel(this.channelName)
     }
   }
 }

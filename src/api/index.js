@@ -27,9 +27,20 @@ export async function fetchUserConfig() {
 
 export async function fetchUserSongList(id) {
   try {
-    return await axios.get(backendPrefix + '/api/user/songList/' + id, {
+    return await axios.get(backendPrefix + `/api/user/songList/${id}`, {
       withCredentials: true
     })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function joinChannel(name) {
+  try {
+    const response = await axios.post(backendPrefix + `/api/channel/join/${name}`, {}, {
+      withCredentials: true
+    })
+    return response.status === 204
   } catch (error) {
     console.log(error)
   }

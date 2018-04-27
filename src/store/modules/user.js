@@ -1,7 +1,7 @@
 import {
   fetchUserInfo,
   fetchUserConfig
-} from '../../api/user'
+} from '../../api/index'
 
 const state = {
   userInfo: {},
