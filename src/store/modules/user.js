@@ -1,3 +1,7 @@
+import {
+  fetchUserInfo
+} from '../../api/user'
+
 const state = {
   userInfo: {}
 }
@@ -9,7 +13,11 @@ const getters = {
 const actions = {
   fetchUserInfo({
     commit
-  }) {}
+  }) {
+    fetchUserInfo().then(userInfo => {
+      commit('setUserInfo', userInfo.data)
+    })
+  }
 }
 
 const mutations = {
