@@ -3,6 +3,10 @@ import {
   backendPrefix
 } from './config'
 
+import {
+  ws
+} from './ws'
+
 export async function fetchUserInfo() {
   try {
     const userInfo = await axios.get(backendPrefix + '/api/user/userinfo', {
@@ -73,4 +77,53 @@ export async function login() {
   } catch (error) {
     console.log(error)
   }
+}
+
+export function wsMessage(callBack) {
+  ws(backendPrefix + '/api/ws', (connect, ping) => {
+    let interval
+    return (event, data) => {
+      switch (event) {
+        case 'open':
+          {
+            interval = window.setInterval(ping, 30 * 1000)
+            callBack('connected')
+            break
+          }
+        case 'close':
+          {
+            window.clearInterval(interval)
+            callBack('disconnected')
+            break
+          }
+        case 'error':
+          break
+        case 'UserListUpdated':
+          {
+            const users = data.users
+            console.log(users)
+            break
+          }
+        case 'Play':
+          {
+            const song = data.song && {
+              ...data.song,
+              player: data.user || '',
+              time: (Date.now() / 1000) - (data.elasped || 0)
+            }
+            return song
+          }
+        case 'Notification':
+          {
+            console.log(data.notfication)
+            break
+          }
+        case 'Disconnect':
+          {
+            console.log(data.cause)
+            break
+          }
+      }
+    }
+  })
 }
