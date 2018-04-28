@@ -67,10 +67,8 @@ export default {
 <style>
 body {
   margin: 0;
-}
-
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: "Lucida Grande", Lucida Sans Unicode, Hiragino Sans GB,
+    WenQuanYi Micro Hei, Verdana, Aril, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
