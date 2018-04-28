@@ -114,12 +114,13 @@ export function wsMessage(callBack) {
               player: data.user || '',
               time: (Date.now() / 1000) - (data.elasped || 0)
             }
-            store.commit('setNextPlay', song)
+            store.commit('setNowPlaying', song)
             break
           }
         case 'Notification':
           {
             store.commit('setNotificiation', data.notification)
+            callBack('notification')
             break
           }
         case 'Disconnect':
