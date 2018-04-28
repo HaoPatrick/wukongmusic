@@ -14,7 +14,7 @@
       </div>
     </section>
     <section class="players">
-      <div v-for="(user,index) in onlineUsers" :key="index">
+      <div :style="{width: nowPlaying.player===user.id?'5em':'4em'}" v-for="(user,index) in onlineUsers" :key="index">
         <el-tooltip effect="dark" :content="user.userName" placement="bottom">
           <img width="100%" :src="user.avatar">
         </el-tooltip>
@@ -57,16 +57,22 @@ export default {
   }
 }
 </script>
+<style>
+.el-tooltip__popper.is-dark {
+  background: #333;
+}
+</style>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .players {
   display: flex;
   justify-content: center;
+  height: 5em;
 }
 .players div {
-  width: 4em;
-  margin-left: 0.5em;
+  margin-left: 1em;
+  transition: 1s all;
 }
 .players div img {
   border-radius: 50%;
