@@ -14,13 +14,14 @@
       </div>
     </section>
     <section class="players">
-      <div :style="{width: nowPlaying.player===user.id?'5em':'4em'}" v-for="(user,index) in onlineUsers" :key="index">
+      <div :style="{width: nowPlaying.player===user.id?'4em':'3em'}" v-for="(user,index) in onlineUsers" :key="index">
         <el-tooltip effect="dark" :content="user.userName" placement="bottom">
           <img width="100%" :src="user.avatar">
         </el-tooltip>
       </div>
     </section>
     <section class="slider">
+      <el-progress :show-text="false" :percentage="playedPerc" color="#b33939"></el-progress>
     </section>
     <section class="control">
 
@@ -30,17 +31,27 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { Howl } from 'howler'
+import { sendEnd } from '../api'
 export default {
   name: 'channel',
   data() {
     return {
+      player: null,
+      playedPerc: 0,
+      test: ''
     }
   },
   computed: {
     ...mapGetters([
       'nowPlaying',
       'onlineUsers'
-    ])
+    ]),
+    playing() {
+      const sound = this.playMusic()
+      this.player = sound
+      return sound
+    }
   },
   mounted() {
     const channelName = this.$route.params.name
@@ -49,11 +60,53 @@ export default {
       title: 'Channel',
       message: `Joined channel ${channelName}`
     })
+    this.player = this.playMusic()
   },
   methods: {
     ...mapActions([
       'joinChannel'
-    ])
+    ]),
+    updateProgress() {
+      const perc = (this.player.seek() || 0) * 100 / this.player.duration()
+      this.playedPerc = Math.floor(perc)
+      if (this.player.playing()) {
+        requestAnimationFrame(() => {
+          this.updateProgress()
+        })
+      }
+    },
+    playMusic() {
+      const self = this
+      if (self.player !== null) {
+        self.player.stop()
+      }
+      const songUrls = self.nowPlaying.musics.map(item => item.file)
+      const sound = new Howl({
+        src: songUrls,
+        loop: false,
+        html5: true,
+        autoplay: true,
+        onend: async function () {
+          const response = await sendEnd(self.nowPlaying)
+          console.log('play ended', response)
+        },
+        onplay: function () {
+          requestAnimationFrame(() => {
+            self.updateProgress()
+          })
+        },
+        onplayerror: function (id, msg) {
+          console.log(id, msg)
+          self.$notify({
+            title: 'Play error',
+            message: msg
+          })
+        }
+      })
+      sound.seek((Date.now() / 1000) - self.nowPlaying.time)
+      this.player = sound
+      return sound
+    }
   }
 }
 </script>
@@ -65,10 +118,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.slider {
+  padding: 0 1.3em 0 1.3em;
+  margin-top: 1em;
+}
+
 .players {
   display: flex;
   justify-content: center;
-  height: 5em;
+  height: 4em;
 }
 .players div {
   margin-left: 1em;
