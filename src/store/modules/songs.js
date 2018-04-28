@@ -3,11 +3,13 @@ import {
 } from '../../api/index'
 
 const state = {
-  songList: []
+  songList: [],
+  nextPlay: {}
 }
 
 const getters = {
-  songList: state => state.songList
+  songList: state => state.songList,
+  nextPlay: state => state.nextPlay
 }
 
 const actions = {
@@ -28,6 +30,9 @@ const actions = {
 const mutations = {
   setSongList(state, songList) {
     state.songList = songList
+  },
+  setNextPlay(state, song) {
+    state.nextPlay = song
   }
 }
 

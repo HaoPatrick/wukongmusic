@@ -1,11 +1,14 @@
 import axios from 'axios'
 import {
-  backendPrefix
+  backendPrefix,
+  wsPrefix
 } from './config'
 
 import {
   ws
 } from './ws'
+
+import store from '../store'
 
 export async function fetchUserInfo() {
   try {
@@ -80,7 +83,7 @@ export async function login() {
 }
 
 export function wsMessage(callBack) {
-  ws(backendPrefix + '/api/ws', (connect, ping) => {
+  ws(wsPrefix + '/api/ws', (connect, ping) => {
     let interval
     return (event, data) => {
       switch (event) {
@@ -101,7 +104,7 @@ export function wsMessage(callBack) {
         case 'UserListUpdated':
           {
             const users = data.users
-            console.log(users)
+            store.commit('setOnlineUsers', users)
             break
           }
         case 'Play':
@@ -111,11 +114,12 @@ export function wsMessage(callBack) {
               player: data.user || '',
               time: (Date.now() / 1000) - (data.elasped || 0)
             }
-            return song
+            store.commit('setNextPlay', song)
+            break
           }
         case 'Notification':
           {
-            console.log(data.notfication)
+            store.commit('setNotificiation', data.notification)
             break
           }
         case 'Disconnect':

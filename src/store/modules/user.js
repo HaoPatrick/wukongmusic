@@ -5,12 +5,14 @@ import {
 
 const state = {
   userInfo: {},
-  userConfig: {}
+  userConfig: {},
+  onlineUsers: []
 }
 
 const getters = {
   userInfo: state => state.userInfo,
-  userConfig: state => state.userConfig
+  userConfig: state => state.userConfig,
+  onlineUsers: state => state.onlineUsers
 }
 
 const actions = {
@@ -34,6 +36,9 @@ const mutations = {
   },
   setUserConfig(state, userConfig) {
     state.userConfig = userConfig
+  },
+  setOnlineUsers(state, users) {
+    state.onlineUsers = users
   }
 }
 

@@ -4,12 +4,14 @@ import {
 
 const state = {
   channelInfo: {},
-  channelName: ''
+  channelName: '',
+  notification: ''
 }
 
 const getters = {
   channelInfo: state => state.channelInfo,
-  channelName: state => state.channelName
+  channelName: state => state.channelName,
+  notification: state => state.notification
 }
 
 const actions = {
@@ -32,6 +34,9 @@ const mutations = {
   },
   setChannelName(state, name) {
     state.channelName = name
+  },
+  setNotification(state, msg) {
+    state.notification = msg
   }
 }
 

@@ -8,6 +8,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { wsMessage } from './api'
 export default {
   name: 'app',
   data() {
@@ -17,6 +18,42 @@ export default {
   mounted: function () {
     this.fetchUserInfo()
     this.fetchUserConfig()
+    wsMessage(async event => {
+      try {
+        switch (event) {
+          case 'connected':
+            {
+              this.$notify({
+                title: 'WebSocket',
+                message: 'Websocket connected, sending next song to server...'
+              })
+              break
+            }
+          case 'interrupted': {
+            this.$notify({
+              title: 'WebSocket',
+              message: 'Websocket interrupted, reconnecting'
+            })
+            break
+          }
+          case 'disconnected': {
+            this.$notify({
+              title: 'WebSocket',
+              message: 'Websocket disconnected'
+            })
+            break
+          }
+          case 'notification': {
+            this.$notify({
+              title: 'Server',
+              message: 'server message'
+            })
+          }
+        }
+      } catch (error) {
+        this.$notify(error.message)
+      }
+    })
   },
   methods: {
     ...mapActions([
