@@ -9,7 +9,7 @@ const state = {
 
 const getters = {
   songList: state => state.songList,
-  nextPlay: state => state.nextPlay
+  nowPlaying: state => state.nowPlaying
 }
 
 const actions = {

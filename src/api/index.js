@@ -82,6 +82,20 @@ export async function login() {
   }
 }
 
+export async function sendEnd(nowPlaying) {
+  try {
+    const response = await axios.post(backendPrefix + '/api/channel/finished',
+      nowPlaying.songId ? nowPlaying : null, {
+        withCredentials: true
+      }
+    )
+    return response
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// TODO: split the api call and the state management
 export function wsMessage(callBack) {
   ws(wsPrefix + '/api/ws', (connect, ping) => {
     let interval
