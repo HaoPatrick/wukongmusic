@@ -5,13 +5,15 @@ import {
 const state = {
   channelInfo: {},
   channelName: '',
-  notification: ''
+  notification: '',
+  muted: false
 }
 
 const getters = {
   channelInfo: state => state.channelInfo,
   channelName: state => state.channelName,
-  notification: state => state.notification
+  notification: state => state.notification,
+  isMuted: state => state.muted
 }
 
 const actions = {
@@ -37,6 +39,9 @@ const mutations = {
   },
   setNotification(state, msg) {
     state.notification = msg
+  },
+  setMute(state, mute) {
+    state.muted = mute
   }
 }
 

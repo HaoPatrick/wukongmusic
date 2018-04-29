@@ -8,44 +8,10 @@
         <p>{{nowPlaying.artist}}</p>
       </div>
     </header>
-    <section class="playing">
-      <div class="image-container">
-        <img width="100%" :src="nowPlaying.artwork?nowPlaying.artwork.file:'https://avatars3.githubusercontent.com/u/5557706?s=400&v=4'">
-      </div>
-    </section>
-    <section class="players">
-      <div :style="{width: nowPlaying.player===user.id?'3.5em':'3em'}" v-for="(user,index) in onlineUsers" :key="index">
-        <el-tooltip :visible-arrow='false' :content="user.userName" placement="top">
-          <img :style="{border: nowPlaying.player===user.id?'2px solid #b33939':'none'}" width="100%" :src="user.avatar">
-        </el-tooltip>
-      </div>
-    </section>
-    <section class="slider">
-      <section>{{timePlayed|second2time}}</section>
-      <section>
-        <el-progress style="width:100%;" :show-text="false" :percentage="playedPerc" color="#b33939"></el-progress>
-      </section>
-      <section>{{timeTotal|second2time}}</section>
-    </section>
-    <section class="control">
-      <div @click="downvote">
-        <i v-if="downvoted.songId!==nowPlaying.songId" class="far fa-thumbs-down"></i>
-        <i v-else class="far fa-thumbs-down"></i>
-      </div>
-      <div>
-        <i class="fas fa-user-secret"></i>
-      </div>
-      <div>
-        <i class="fas fa-download"></i>
-      </div>
-      <div>
-        <i class="fas fa-link"></i>
-      </div>
-      <div @click="muteMusic">
-        <i v-if="muted" class="fas fa-volume-off"></i>
-        <i v-else class="fas fa-volume-up"></i>
-      </div>
-    </section>
+    <cover :nowPlaying='nowPlaying'></cover>
+    <players :nowPlaying='nowPlaying' :onlineUsers='onlineUsers'></players>
+    <progressbar :timePlayed='timePlayed' :timeTotal='timeTotal' :playedPerc='playedPerc'></progressbar>
+    <control @muteMusic='muteMusic'></control>
   </div>
 </template>
 
@@ -53,6 +19,10 @@
 import { mapActions, mapGetters } from 'vuex'
 import { getHowl } from '../client/getHowl'
 import store from '../store'
+import control from './Channel/Control'
+import progressbar from './Channel/Progressbar'
+import players from './Channel/Players'
+import cover from './Channel/Cover'
 export default {
   name: 'channel',
   data() {
@@ -61,23 +31,22 @@ export default {
       playedPerc: 0,
       cached: [],
       timePlayed: 0,
-      timeTotal: 0,
-      muted: false
+      timeTotal: 0
     }
   },
-  filters: {
-    second2time(sec) {
-      const second = sec % 60
-      const min = Math.floor(sec / 60)
-      return `${min}:${second > 9 ? second : '0' + second}`
-    }
+  components: {
+    'control': control,
+    'progressbar': progressbar,
+    'players': players,
+    'cover': cover
   },
   computed: {
     ...mapGetters([
       'nowPlaying',
       'onlineUsers',
       'nextSong',
-      'downvoted'
+      'downvoted',
+      'isMuted'
     ]),
     nextHowl() {
       if (this.nextSong.title) {
@@ -118,13 +87,10 @@ export default {
         }, 1000)
       }
     },
-    downvote() {
-      store.dispatch('downvoteCurrentSong')
-    },
     muteMusic() {
       if (this.player) {
-        this.muted = !this.muted
-        this.player.mute(this.muted)
+        store.commit('setMute', !this.isMuted)
+        this.player.mute(this.isMuted)
       }
     },
     playMusic() {
@@ -161,56 +127,11 @@ export default {
 </script>
 <style>
 .el-tooltip__popper.is-dark {
-  background: #b33939;
+  background: var(--theme-color);
 }
 </style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.control {
-  display: flex;
-  justify-content: center;
-  margin-top: 0.8em;
-  font-size: 1.4em;
-}
-.control div {
-  margin: 0 0.5em 0 0.5em;
-  min-width: 1.5em;
-}
-
-.slider {
-  padding: 0 1.3em 0 1.3em;
-  margin-top: 1.7em;
-  display: flex;
-  font-size: 0.7em;
-}
-
-.slider section:nth-of-type(2) {
-  min-width: 13em;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0 0.6em 0 0.6em;
-}
-
-.players {
-  display: flex;
-  justify-content: center;
-  height: 4em;
-}
-.players div {
-  margin-left: 1em;
-  transition: 1s all;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.players div img {
-  border-radius: 50%;
-}
-
 .container {
   display: flex;
   flex-direction: column;
@@ -222,28 +143,7 @@ export default {
   right: 0;
   color: rgb(245, 245, 245);
 }
-.image-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 21em;
-}
-.image-container > img {
-  width: 45%;
-  border-radius: 50%;
-  box-shadow: 0 0 0 6px #2f2f2f, 0 0 0 12px #272727, 0 0 0 18px #1f1f1f,
-    0 0 0 24px #171717, 0 0 0 30px #0f0f0f, 0 0 0 36px #070707,
-    0 0 0 42px #000000, 0 0 0 48px rgba(255, 255, 255, 0.05);
-  animation: rotation 25s infinite linear;
-}
-@keyframes rotation {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+
 .background {
   position: fixed;
   left: 0;
@@ -252,7 +152,7 @@ export default {
   width: 100%;
   height: 100%;
   filter: blur(4em) brightness(0.2);
-  background-size: 100% 100%;
+  background-size: 100% auto;
   background-position: center;
   background-repeat: no-repeat;
 }

@@ -71,5 +71,6 @@ body {
     "Microsoft Yahei", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --theme-color: #e84118;
 }
 </style>
