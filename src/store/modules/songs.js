@@ -4,12 +4,14 @@ import {
 
 const state = {
   songList: [],
-  nowPlaying: {}
+  nowPlaying: {},
+  nextSong: {}
 }
 
 const getters = {
   songList: state => state.songList,
-  nowPlaying: state => state.nowPlaying
+  nowPlaying: state => state.nowPlaying,
+  nextSong: state => state.nextSong
 }
 
 const actions = {
@@ -33,6 +35,9 @@ const mutations = {
   },
   setNowPlaying(state, song) {
     state.nowPlaying = song
+  },
+  setNextSong(state, song) {
+    state.nextSong = song
   }
 }
 

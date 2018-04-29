@@ -130,8 +130,14 @@ export function wsMessage(callBack) {
               channel: data.channelId,
               downvote: data.downvote
             }
-            console.log(data)
             store.commit('setNowPlaying', song)
+            break
+          }
+        case 'Preload':
+          {
+            const song = data.song
+            console.log(data)
+            store.commit('setNextSong', song)
             break
           }
         case 'Notification':

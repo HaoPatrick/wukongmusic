@@ -14,9 +14,9 @@
       </div>
     </section>
     <section class="players">
-      <div :style="{width: nowPlaying.player===user.id?'4em':'3em'}" v-for="(user,index) in onlineUsers" :key="index">
+      <div :style="{width: nowPlaying.player===user.id?'3.5em':'3em'}" v-for="(user,index) in onlineUsers" :key="index">
         <el-tooltip effect="dark" :content="user.userName" placement="bottom">
-          <img width="100%" :src="user.avatar">
+          <img :style="{border: nowPlaying.player===user.id?'2px solid #b33939':'none'}" width="100%" :src="user.avatar">
         </el-tooltip>
       </div>
     </section>
@@ -31,8 +31,9 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { Howl } from 'howler'
-import { sendEnd } from '../api'
+// import { Howl } from 'howler'
+// import { sendEnd } from '../api'
+import { getHowl } from '../client/getHowl'
 export default {
   name: 'channel',
   data() {
@@ -45,8 +46,17 @@ export default {
   computed: {
     ...mapGetters([
       'nowPlaying',
-      'onlineUsers'
-    ])
+      'onlineUsers',
+      'nextSong'
+    ]),
+    nextHowl() {
+      if (this.nextSong.title) {
+        const sound = getHowl(this.nextSong)
+        return sound
+      } else {
+        return null
+      }
+    }
   },
   watch: {
     nowPlaying: function (_) {
@@ -81,30 +91,21 @@ export default {
       if (self.player !== null) {
         self.player.stop()
       }
-      const songUrls = self.nowPlaying.musics.map(item => item.file)
-      const sound = new Howl({
-        src: songUrls,
-        loop: false,
-        html5: true,
-        autoplay: true,
-        onend: async function () {
-          const response = await sendEnd(self.nowPlaying)
-          console.log('play ended', response)
-        },
-        onplay: function () {
-          sound.seek(self.nowPlaying.elapsed)
-          requestAnimationFrame(() => {
-            self.updateProgress()
-          })
-        },
-        onplayerror: function (id, msg) {
-          console.log(id, msg)
-          self.$notify({
-            title: 'Play error',
-            message: msg
-          })
-        }
+      const sound = this.nextHowl !== null ? this.nextHowl : getHowl(self.nowPlaying)
+      sound.on('play', () => {
+        sound.seek(self.nowPlaying.elapsed)
+        requestAnimationFrame(() => {
+          self.updateProgress()
+        })
       })
+      sound.on('playerror', (id, msg) => {
+        console.log(id, msg)
+        self.$notify({
+          title: 'Play error',
+          message: msg
+        })
+      })
+      sound.play()
       this.player = sound
       return sound
     }
@@ -178,7 +179,9 @@ export default {
   width: 100%;
   height: 100%;
   filter: blur(5em) brightness(0.3);
-  background-size: cover;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .header {
   height: 3em;
