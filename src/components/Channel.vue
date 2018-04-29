@@ -41,8 +41,9 @@
       <div>
         <i class="fas fa-link"></i>
       </div>
-      <div>
-        <i class="fas fa-volume-off"></i>
+      <div @click="muteMusic">
+        <i v-if="muted" class="fas fa-volume-off"></i>
+        <i v-else class="fas fa-volume-up"></i>
       </div>
     </section>
   </div>
@@ -60,7 +61,8 @@ export default {
       playedPerc: 0,
       cached: [],
       timePlayed: 0,
-      timeTotal: 0
+      timeTotal: 0,
+      muted: false
     }
   },
   filters: {
@@ -119,6 +121,12 @@ export default {
     downvote() {
       store.dispatch('downvoteCurrentSong')
     },
+    muteMusic() {
+      if (this.player) {
+        this.muted = !this.muted
+        this.player.mute(this.muted)
+      }
+    },
     playMusic() {
       const self = this
       if (self.player !== null) {
@@ -166,6 +174,7 @@ export default {
 }
 .control div {
   margin: 0 0.5em 0 0.5em;
+  min-width: 1.5em;
 }
 
 .slider {
