@@ -67,8 +67,8 @@ export default {
 <style>
 body {
   margin: 0;
-  font-family: "Lucida Grande", Lucida Sans Unicode, Hiragino Sans GB,
-    WenQuanYi Micro Hei, Verdana, Aril, sans-serif;
+  font-family: Helvetica, Arial, "PingFang SC", "Noto Sans", Roboto,
+    "Microsoft Yahei", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

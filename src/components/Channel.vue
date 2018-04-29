@@ -28,7 +28,22 @@
       <section>{{timeTotal|second2time}}</section>
     </section>
     <section class="control">
-
+      <div @click="downvote">
+        <i v-if="downvoted.songId!==nowPlaying.songId" class="far fa-thumbs-down"></i>
+        <i v-else class="far fa-thumbs-down"></i>
+      </div>
+      <div>
+        <i class="fas fa-user-secret"></i>
+      </div>
+      <div>
+        <i class="fas fa-download"></i>
+      </div>
+      <div>
+        <i class="fas fa-link"></i>
+      </div>
+      <div>
+        <i class="fas fa-volume-off"></i>
+      </div>
     </section>
   </div>
 </template>
@@ -36,6 +51,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { getHowl } from '../client/getHowl'
+import store from '../store'
 export default {
   name: 'channel',
   data() {
@@ -51,14 +67,15 @@ export default {
     second2time(sec) {
       const second = sec % 60
       const min = Math.floor(sec / 60)
-      return `${min}:${second > 10 ? second : '0' + second}`
+      return `${min}:${second > 9 ? second : '0' + second}`
     }
   },
   computed: {
     ...mapGetters([
       'nowPlaying',
       'onlineUsers',
-      'nextSong'
+      'nextSong',
+      'downvoted'
     ]),
     nextHowl() {
       if (this.nextSong.title) {
@@ -99,6 +116,9 @@ export default {
         }, 1000)
       }
     },
+    downvote() {
+      store.dispatch('downvoteCurrentSong')
+    },
     playMusic() {
       const self = this
       if (self.player !== null) {
@@ -138,9 +158,19 @@ export default {
 </style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.control {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.8em;
+  font-size: 1.4em;
+}
+.control div {
+  margin: 0 0.5em 0 0.5em;
+}
+
 .slider {
   padding: 0 1.3em 0 1.3em;
-  margin-top: 1em;
+  margin-top: 1.7em;
   display: flex;
   font-size: 0.7em;
 }
@@ -152,7 +182,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 1em 0 1em;
+  padding: 0 0.6em 0 0.6em;
 }
 
 .players {
@@ -212,7 +242,7 @@ export default {
   z-index: -1;
   width: 100%;
   height: 100%;
-  filter: blur(5em) brightness(0.3);
+  filter: blur(4em) brightness(0.2);
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;

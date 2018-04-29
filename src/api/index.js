@@ -60,6 +60,17 @@ export async function sendUpNext(song, cookie = null) {
   }
 }
 
+export async function sendDownvote(song) {
+  try {
+    const response = await axios.post(backendPrefix + '/api/channel/downvote', song, {
+      withCredentials: true
+    })
+    return response
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export async function joinChannel(name) {
   try {
     const response = await axios.post(backendPrefix + `/api/channel/join/${name}`, {}, {
