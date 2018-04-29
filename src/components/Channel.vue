@@ -20,7 +20,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { getHowl } from '../client/getHowl'
 import store from '../store'
 import control from './Channel/Control'
-import progressbar from './Channel/Progressbar'
+import progressbar from './Channel/ProgressBar'
 import players from './Channel/Players'
 import cover from './Channel/Cover'
 export default {
@@ -151,7 +151,7 @@ export default {
   z-index: -1;
   width: 100%;
   height: 100%;
-  filter: blur(4em) brightness(0.2);
+  filter: blur(3em) brightness(0.2);
   background-size: 100% auto;
   background-position: center;
   background-repeat: no-repeat;

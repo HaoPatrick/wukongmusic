@@ -28,8 +28,8 @@ export default {
 .image-container > img {
   width: 45%;
   border-radius: 50%;
-  box-shadow: 0 0 0 6px #2f2f2f, 0 0 0 12px #272727, 0 0 0 18px #1f1f1f,
-    0 0 0 24px #171717, 0 0 0 30px #0f0f0f, 0 0 0 36px #070707,
+  box-shadow: 0 0 0 6px #181818, 0 0 0 12px #141414, 0 0 0 18px #0f0f0f,
+    0 0 0 24px #0c0c0c, 0 0 0 30px #080808, 0 0 0 36px #040404,
     0 0 0 42px #000000, 0 0 0 48px rgba(255, 255, 255, 0.05);
   animation: rotation 25s infinite linear;
 }

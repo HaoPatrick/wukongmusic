@@ -7,7 +7,7 @@
     <div>
       <i class="fas fa-user-secret"></i>
     </div>
-    <div>
+    <div v-popover:popover>
       <i class="fas fa-download"></i>
     </div>
     <div>
@@ -17,6 +17,22 @@
       <i v-if="isMuted" class="fas fa-volume-off"></i>
       <i v-else class="fas fa-volume-up"></i>
     </div>
+
+    <el-popover ref="popover" placement="top" width="200" trigger="click">
+      <div>
+        <h3>Download Song</h3>
+
+        <div v-for='(item,index) in nowPlaying.musics' :key="'download'+index">
+          <i v-if="item.audioQuality==='high'" class="fab fa-superpowers"></i>
+          <span>
+            <a target="_blank" :href="item.file">source</a>
+          </span>
+          <span v-if="item.fileViaCdn">
+            <a target="_blank" :href="item.fileViaCdn">CDN</a>
+          </span>
+        </div>
+      </div>
+    </el-popover>
   </section>
 </template>
 
@@ -58,5 +74,7 @@ export default {
 .control div {
   margin: 0 0.5em 0 0.5em;
   min-width: 1.5em;
+  display: flex;
+  justify-content: center;
 }
 </style>
