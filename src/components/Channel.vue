@@ -15,7 +15,7 @@
     </section>
     <section class="players">
       <div :style="{width: nowPlaying.player===user.id?'3.5em':'3em'}" v-for="(user,index) in onlineUsers" :key="index">
-        <el-tooltip effect="dark" :content="user.userName" placement="bottom">
+        <el-tooltip :visible-arrow='false' :content="user.userName" placement="top">
           <img :style="{border: nowPlaying.player===user.id?'2px solid #b33939':'none'}" width="100%" :src="user.avatar">
         </el-tooltip>
       </div>
@@ -31,8 +31,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-// import { Howl } from 'howler'
-// import { sendEnd } from '../api'
 import { getHowl } from '../client/getHowl'
 export default {
   name: 'channel',
@@ -40,7 +38,7 @@ export default {
     return {
       player: null,
       playedPerc: 0,
-      test: ''
+      cached: []
     }
   },
   computed: {
@@ -52,6 +50,7 @@ export default {
     nextHowl() {
       if (this.nextSong.title) {
         const sound = getHowl(this.nextSong)
+        this.cached.push({ howl: sound, songId: this.nextSong.songId })
         return sound
       } else {
         return null
@@ -91,7 +90,12 @@ export default {
       if (self.player !== null) {
         self.player.stop()
       }
-      const sound = this.nextHowl !== null ? this.nextHowl : getHowl(self.nowPlaying)
+      let sound
+      if (self.cached.length > 0 && self.cached[self.cached.length - 1].songId === self.nowPlaying.songId) {
+        sound = self.cached.pop().howl
+      } else {
+        sound = getHowl(self.nowPlaying)
+      }
       sound.on('play', () => {
         sound.seek(self.nowPlaying.elapsed)
         requestAnimationFrame(() => {
@@ -114,10 +118,9 @@ export default {
 </script>
 <style>
 .el-tooltip__popper.is-dark {
-  background: #333;
+  background: #b33939;
 }
 </style>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .slider {
@@ -133,6 +136,10 @@ export default {
 .players div {
   margin-left: 1em;
   transition: 1s all;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .players div img {
   border-radius: 50%;
