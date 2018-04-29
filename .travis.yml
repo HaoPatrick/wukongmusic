@@ -11,7 +11,7 @@ cache:
 deploy:
   - provider: script
     skip_cleanup: true
-    script: rsync -avzhe ssh ./dist/ hao@vul.haoxp.xyz:/home/hao/tech_blog
+    script: rsync -avzhe ssh ./dist/ hao@vul.haoxp.xyz:/home/hao/wukong
     on:
       branch: master
 
