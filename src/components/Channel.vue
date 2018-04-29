@@ -21,7 +21,11 @@
       </div>
     </section>
     <section class="slider">
-      <el-progress :show-text="false" :percentage="playedPerc" color="#b33939"></el-progress>
+      <section>{{timePlayed|second2time}}</section>
+      <section>
+        <el-progress style="width:100%;" :show-text="false" :percentage="playedPerc" color="#b33939"></el-progress>
+      </section>
+      <section>{{timeTotal|second2time}}</section>
     </section>
     <section class="control">
 
@@ -38,7 +42,16 @@ export default {
     return {
       player: null,
       playedPerc: 0,
-      cached: []
+      cached: [],
+      timePlayed: 0,
+      timeTotal: 0
+    }
+  },
+  filters: {
+    second2time(sec) {
+      const second = sec % 60
+      const min = Math.floor(sec / 60)
+      return `${min}:${second > 10 ? second : '0' + second}`
     }
   },
   computed: {
@@ -79,10 +92,11 @@ export default {
     updateProgress() {
       if (this.player.playing()) {
         const perc = (this.player.seek() || 0) * 100 / this.player.duration()
+        this.timePlayed = Math.floor(this.player.seek() || 0)
         this.playedPerc = perc
         setTimeout(() => {
           this.updateProgress()
-        }, 500)
+        }, 1000)
       }
     },
     playMusic() {
@@ -97,6 +111,7 @@ export default {
         sound = getHowl(self.nowPlaying)
       }
       sound.on('play', () => {
+        self.timeTotal = Math.floor(sound.duration())
         sound.seek(self.nowPlaying.elapsed)
         requestAnimationFrame(() => {
           self.updateProgress()
@@ -126,6 +141,18 @@ export default {
 .slider {
   padding: 0 1.3em 0 1.3em;
   margin-top: 1em;
+  display: flex;
+  font-size: 0.7em;
+}
+
+.slider section:nth-of-type(2) {
+  min-width: 13em;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1em 0 1em;
 }
 
 .players {
