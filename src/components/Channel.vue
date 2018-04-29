@@ -46,8 +46,10 @@ export default {
     ...mapGetters([
       'nowPlaying',
       'onlineUsers'
-    ]),
-    playing() {
+    ])
+  },
+  watch: {
+    nowPlaying: function (_) {
       const sound = this.playMusic()
       this.player = sound
       return sound
@@ -60,19 +62,18 @@ export default {
       title: 'Channel',
       message: `Joined channel ${channelName}`
     })
-    this.player = this.playMusic()
   },
   methods: {
     ...mapActions([
       'joinChannel'
     ]),
     updateProgress() {
-      const perc = (this.player.seek() || 0) * 100 / this.player.duration()
-      this.playedPerc = Math.floor(perc)
       if (this.player.playing()) {
-        requestAnimationFrame(() => {
+        const perc = (this.player.seek() || 0) * 100 / this.player.duration()
+        this.playedPerc = perc
+        setTimeout(() => {
           this.updateProgress()
-        })
+        }, 500)
       }
     },
     playMusic() {
@@ -91,6 +92,7 @@ export default {
           console.log('play ended', response)
         },
         onplay: function () {
+          sound.seek(self.nowPlaying.elapsed)
           requestAnimationFrame(() => {
             self.updateProgress()
           })
@@ -103,7 +105,6 @@ export default {
           })
         }
       })
-      sound.seek((Date.now() / 1000) - self.nowPlaying.time)
       this.player = sound
       return sound
     }

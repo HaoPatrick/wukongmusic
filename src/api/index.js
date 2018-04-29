@@ -126,8 +126,11 @@ export function wsMessage(callBack) {
             const song = data.song && {
               ...data.song,
               player: data.user || '',
-              time: (Date.now() / 1000) - (data.elasped || 0)
+              elapsed: data.elapsed,
+              channel: data.channelId,
+              downvote: data.downvote
             }
+            console.log(data)
             store.commit('setNowPlaying', song)
             break
           }
