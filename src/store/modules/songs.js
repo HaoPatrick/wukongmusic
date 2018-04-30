@@ -3,6 +3,10 @@ import {
   sendDownvote
 } from '../../api/index'
 
+import {
+  updateCDN
+} from '../../api/localdata'
+
 const state = {
   songList: [],
   nowPlaying: {},
@@ -71,6 +75,7 @@ const mutations = {
   },
   setCDN(state, cdn) {
     state.useCDN = cdn
+    updateCDN(cdn)
   },
   setTimePlayed(state, time) {
     state.timePlayed = time

@@ -117,6 +117,7 @@ export default {
       sound.on('play', () => {
         self.timeTotal = Math.floor(sound.duration())
         sound.seek(self.nowPlaying.elapsed)
+        sound.mute(self.isMuted)
         requestAnimationFrame(() => {
           self.updateProgress()
         })

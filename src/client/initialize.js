@@ -1,14 +1,13 @@
 import store from '../store'
 import {
   loadSongList,
-  loadUserPre
+  setUserPre
 } from '../api/localdata'
 
 export function initClient() {
   store.dispatch('fetchUserInfo')
   store.dispatch('fetchUserConfig')
+  setUserPre()
   const songList = loadSongList()
-  const userPre = loadUserPre()
-  console.log(userPre)
   store.commit('setSongList', songList)
 }

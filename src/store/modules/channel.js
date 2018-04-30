@@ -2,6 +2,10 @@ import {
   joinChannel
 } from '../../api/index'
 
+import {
+  updateMuted
+} from '../../api/localdata'
+
 const state = {
   channelInfo: {},
   channelName: '',
@@ -12,7 +16,7 @@ const state = {
 const getters = {
   channelInfo: state => state.channelInfo,
   channelName: state => state.channelName,
-  setNotification: state => state.notification,
+  notification: state => state.notification,
   isMuted: state => state.muted
 }
 
@@ -42,6 +46,7 @@ const mutations = {
   },
   setMute(state, mute) {
     state.muted = mute
+    updateMuted(mute)
   }
 }
 

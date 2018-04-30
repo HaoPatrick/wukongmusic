@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
 import UserInfo from '@/components/UserInfo'
 import Channel from '@/components/Channel'
 import Join from '@/components/Join'
@@ -11,8 +10,7 @@ export default new Router({
   mode: 'history',
   routes: [{
       path: '/',
-      name: 'Hello',
-      component: Hello
+      redirect: '/join'
     },
     {
       path: '/user',
