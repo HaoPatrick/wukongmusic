@@ -1,5 +1,5 @@
 <template>
-  <div v-if="nowPlaying.title" class="container">
+  <div v-loading.fullscreen.lock="!nowPlaying.title" v-if="nowPlaying.title" class="container">
     <div class="background" :style="{background: `url(${nowPlaying.resource?nowPlaying.resource.cover:'https://avatars3.githubusercontent.com/u/5557706?s=400&v=4'})`}">
     </div>
     <header class="header">
@@ -71,6 +71,9 @@ export default {
   },
   mounted() {
     const channelName = this.$route.params.name
+    if (!channelName) {
+      this.$router.push({ path: '/join' })
+    }
     this.joinChannel(channelName)
     this.$notify({
       title: 'Channel',
@@ -142,7 +145,6 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
-  width: 100%;
   position: fixed;
   width: 100%;
   height: 100%;
