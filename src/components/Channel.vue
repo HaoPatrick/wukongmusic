@@ -1,6 +1,6 @@
 <template>
   <div v-if="nowPlaying.title" class="container">
-    <div class="background" :style="{background: `url(${nowPlaying.artwork?nowPlaying.artwork.file:'https://avatars3.githubusercontent.com/u/5557706?s=400&v=4'})`}">
+    <div class="background" :style="{background: `url(${nowPlaying.resource?nowPlaying.resource.cover:'https://avatars3.githubusercontent.com/u/5557706?s=400&v=4'})`}">
     </div>
     <header class="header">
       <div>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { getHowl } from '../client/getHowl'
 import store from '../store'
 import control from './Channel/Control'
@@ -30,7 +30,6 @@ export default {
       player: null,
       playedPerc: 0,
       cached: [],
-      timePlayed: 0,
       timeTotal: 0
     }
   },
@@ -46,7 +45,8 @@ export default {
       'onlineUsers',
       'nextSong',
       'downvoted',
-      'isMuted'
+      'isMuted',
+      'timePlayed'
     ]),
     nextHowl() {
       if (this.nextSong.title) {
@@ -77,11 +77,14 @@ export default {
     ...mapActions([
       'joinChannel'
     ]),
+    ...mapMutations([
+      'setTimePlayed'
+    ]),
     updateProgress() {
       if (this.player.playing()) {
-        const perc = (this.player.seek() || 0) * 100 / this.player.duration()
-        this.timePlayed = Math.floor(this.player.seek() || 0)
-        this.playedPerc = perc
+        const played = Math.floor(this.player.seek() || 0)
+        this.setTimePlayed(played)
+        this.playedPerc = played * 100 / this.timeTotal
         setTimeout(() => {
           this.updateProgress()
         }, 1000)

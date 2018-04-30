@@ -10,8 +10,9 @@
     <div v-popover:popover>
       <i class="fas fa-download"></i>
     </div>
-    <div>
-      <i class="fas fa-link"></i>
+    <div @click="toggleCDN">
+      <i v-if="useCDN" class="fas fa-link"></i>
+      <i v-else class="fas fa-unlink"></i>
     </div>
     <div @click="muteMusic">
       <i v-if="isMuted" class="fas fa-volume-off"></i>
@@ -23,7 +24,11 @@
         <h3>Download Song</h3>
 
         <div v-for='(item,index) in nowPlaying.musics' :key="'download'+index">
-          <i v-if="item.audioQuality==='high'" class="fab fa-superpowers"></i>
+          <span>{{index}}.</span>
+          <span v-if="item.audioQuality==='high'">
+            [
+            <i class="fab fa-superpowers"></i>HQ]
+          </span>
           <span>
             <a target="_blank" :href="item.file">source</a>
           </span>
@@ -37,7 +42,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import store from '../../store'
 export default {
   name: 'control',
@@ -49,10 +54,14 @@ export default {
     ...mapGetters([
       'nowPlaying',
       'downvoted',
-      'isMuted'
+      'isMuted',
+      'useCDN'
     ])
   },
   methods: {
+    ...mapActions([
+      'toggleCDN'
+    ]),
     downvote() {
       store.dispatch('downvoteCurrentSong')
     },
@@ -68,7 +77,7 @@ export default {
 .control {
   display: flex;
   justify-content: center;
-  margin-top: 0.8em;
+  margin-top: 0.5em;
   font-size: 1.4em;
 }
 .control div {

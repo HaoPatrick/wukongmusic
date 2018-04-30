@@ -6,9 +6,8 @@ import {
 } from '../api'
 
 export function getHowl(song) {
-  const songUrls = song.musics.map(item => item.file)
   const sound = new Howl({
-    src: songUrls,
+    src: song.resource.music,
     loop: false,
     html5: true,
     autoplay: false,

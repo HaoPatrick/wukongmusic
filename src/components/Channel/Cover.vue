@@ -1,7 +1,7 @@
 <template>
   <section class="playing">
     <div class="image-container">
-      <img width="100%" :src="nowPlaying.artwork?nowPlaying.artwork.file:'https://avatars3.githubusercontent.com/u/5557706?s=400&v=4'">
+      <img width="100%" :src="nowPlaying.resource?nowPlaying.resource.cover:'https://avatars3.githubusercontent.com/u/5557706?s=400&v=4'">
     </div>
   </section>
 </template>

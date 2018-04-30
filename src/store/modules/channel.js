@@ -12,7 +12,7 @@ const state = {
 const getters = {
   channelInfo: state => state.channelInfo,
   channelName: state => state.channelName,
-  notification: state => state.notification,
+  setNotification: state => state.notification,
   isMuted: state => state.muted
 }
 

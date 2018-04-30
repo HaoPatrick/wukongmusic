@@ -30,7 +30,7 @@ export default {
 <style scoped>
 .slider {
   padding: 0 1.3em 0 1.3em;
-  margin-top: 1.7em;
+  margin-top: 2em;
   display: flex;
   font-size: 0.7em;
 }
