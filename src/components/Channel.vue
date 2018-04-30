@@ -4,7 +4,7 @@
     </div>
     <header class="header">
       <div>
-        <i class="fas fa-bars"></i>
+        <i @click="showMenu" class="fas fa-bars"></i>
       </div>
       <div>
         <h3>{{nowPlaying.title}}</h3>
@@ -87,6 +87,13 @@ export default {
     ...mapMutations([
       'setTimePlayed'
     ]),
+    showMenu() {
+      const h = this.$createElement
+      this.$notify({
+        title: 'oops',
+        message: h({ style: 'color: teal' }, 'Patrick is working on this...')
+      })
+    },
     updateProgress() {
       if (this.player.playing()) {
         const played = Math.floor(this.player.seek() || 0)
@@ -172,7 +179,7 @@ export default {
   filter: blur(2em) brightness(0.3);
   background-position: 50%;
   background-size: cover !important;
-  transform: scale(1.2);
+  transform: scale(1.5);
 }
 .header {
   height: 3em;

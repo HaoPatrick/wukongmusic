@@ -24,7 +24,7 @@ export default {
             {
               this.$notify({
                 title: 'WebSocket',
-                message: 'Websocket connected, sending next song to server...'
+                message: 'Websocket connected'
               })
               break
             }
@@ -62,8 +62,9 @@ export default {
 <style>
 body {
   margin: 0;
-  font-family: Helvetica, Arial, "PingFang SC", "Noto Sans", Roboto,
-    "Microsoft Yahei", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica,
+    Roboto, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC,
+    WenQuanYi Micro Hei, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --theme-color: #e84118;
