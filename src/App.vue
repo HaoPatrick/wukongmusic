@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import { wsMessage } from './api'
+import { initClient } from './client/initialize'
 export default {
   name: 'app',
   data() {
@@ -16,8 +16,7 @@ export default {
     }
   },
   mounted: function () {
-    this.fetchUserInfo()
-    this.fetchUserConfig()
+    initClient()
     wsMessage(async event => {
       try {
         switch (event) {
@@ -56,10 +55,6 @@ export default {
     })
   },
   methods: {
-    ...mapActions([
-      'fetchUserInfo',
-      'fetchUserConfig'
-    ])
   }
 }
 </script>

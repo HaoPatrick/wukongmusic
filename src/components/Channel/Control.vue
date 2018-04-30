@@ -18,6 +18,17 @@
       <i v-if="isMuted" class="fas fa-volume-off"></i>
       <i v-else class="fas fa-volume-up"></i>
     </div>
+    <div v-popover:popover-songs>
+      <i class="fab fa-elementor"></i>
+    </div>
+    <el-popover ref="popover-songs" placement="left" width="200" trigger="click">
+      <h3>PLAYLIST
+        <i @click="syncMusic" class="fas fa-sync-alt"></i>
+      </h3>
+      <div>
+        <section v-for='(item,index) in songList' :key="`song-${index}`">{{index}}.{{item}}</section>
+      </div>
+    </el-popover>
 
     <el-popover ref="popover" placement="top" width="200" trigger="click">
       <div>
@@ -55,7 +66,9 @@ export default {
       'nowPlaying',
       'downvoted',
       'isMuted',
-      'useCDN'
+      'useCDN',
+      'songList',
+      'userConfig'
     ])
   },
   methods: {
@@ -67,6 +80,9 @@ export default {
     },
     muteMusic() {
       this.$emit('muteMusic')
+    },
+    syncMusic() {
+      store.dispatch('fetchSongList', this.userConfig)
     }
   }
 }

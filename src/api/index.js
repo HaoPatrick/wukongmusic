@@ -8,6 +8,10 @@ import {
   ws
 } from './ws'
 
+import {
+  saveSongList
+} from './localdata'
+
 import store from '../store'
 
 export async function fetchUserInfo() {
@@ -40,6 +44,7 @@ export async function fetchUserSongList(url, cookie) {
     }, {
       withCredentials: true
     })
+    saveSongList(response.data)
     return response.data
   } catch (error) {
     console.log(error)
