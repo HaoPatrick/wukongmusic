@@ -4,10 +4,14 @@
     </div>
     <header class="header">
       <div>
+        <i class="fas fa-bars"></i>
+      </div>
+      <div>
         <h3>{{nowPlaying.title}}</h3>
         <p>{{nowPlaying.artist}}</p>
       </div>
     </header>
+    <hr>
     <cover :nowPlaying='nowPlaying'></cover>
     <players :nowPlaying='nowPlaying' :onlineUsers='onlineUsers'></players>
     <progressbar :timePlayed='timePlayed' :timeTotal='timeTotal' :playedPerc='playedPerc'></progressbar>
@@ -144,31 +148,49 @@ export default {
   height: 100%;
   left: 0;
   right: 0;
-  color: rgb(245, 245, 245);
+  color: rgb(255, 255, 255);
+}
+
+.container hr {
+  width: 100%;
+  background-image: linear-gradient(90deg, transparent, #ccc 50%, transparent);
+  border: 0;
+  height: 1px;
+  margin: 0.2em 0 0.2em 0;
 }
 
 .background {
   position: fixed;
   left: 0;
-  right: 0;
+  top: 0;
   z-index: -1;
   width: 100%;
   height: 100%;
-  filter: blur(3em) brightness(0.2);
-  background-size: 100% auto;
-  background-position: center;
-  background-repeat: no-repeat;
+  filter: blur(2em) brightness(0.3);
+  background-position: 50%;
+  background-size: cover !important;
+  transform: scale(1.2);
 }
 .header {
   height: 3em;
-  padding-left: 3em;
   display: flex;
   align-items: center;
   justify-content: left;
-  border-bottom: 1px solid #ccc;
+  margin-top: 0.3em;
+}
+.header div:nth-of-type(1) {
+  min-width: 2.5em;
+  display: flex;
+  justify-content: center;
+  font-size: 1.6em;
 }
 .header h3 {
   font-size: 1.2em;
+  font-weight: 500;
+  margin-bottom: 0.2em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .header p {
   color: #ccc;
